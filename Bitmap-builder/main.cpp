@@ -1,15 +1,18 @@
 #pragma once
-#include <SDL.h>
+
 #include <iostream>
+#include "Display.h"
 
 
 int main(int argc, char * argv[]) {
-	if (SDL_Init(SDL_INIT_EVERYTHING)) {
-		std::cout << "SDL initialization failed. SDL Error: " << SDL_GetError();
+
+	if (argc < 2) {
+		std::cout << "Not enough arguments." << std::endl;
+		//return 0;
 	}
-	else {
-		std::cout << "SDL initialization succeeded!";
-	}
-	std::cin.get();
+	
+	Display display;
+	display.loadPicture(argv[1]);
+
 	return 0;
 }
