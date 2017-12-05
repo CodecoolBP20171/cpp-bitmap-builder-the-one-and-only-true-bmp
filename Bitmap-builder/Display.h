@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL.h>
+#include <SDL_image.h>
 
 class Display
 {
@@ -18,8 +19,11 @@ private:
 	SDL_Window* gWindow = NULL;
 	SDL_Surface* gScreenSurface = NULL;
 	SDL_Surface* gImage = NULL;
+	SDL_Renderer* gRenderer = NULL;
+	SDL_Texture* gTexture = NULL;
 
-
+	bool loadMedia(char*);
+	SDL_Texture* loadTexture(char* );
 
 };
 
