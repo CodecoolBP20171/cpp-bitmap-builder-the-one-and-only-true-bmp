@@ -41,8 +41,6 @@ Display::Display()
 			}
 		}
 	}
-
-	
 }
 
 
@@ -126,11 +124,21 @@ SDL_Rect Display::createRectangle() {
 void Display::loadPicture(char * filename) {
 
 	SDL_RenderClear(gRenderer);
-	Display::loadMedia(filename);
 	
-	SDL_Rect destRectangle = Display::createRectangle();
+	loadMedia(filename);
+	SDL_Rect destRectangle = createRectangle();
 
-	SDL_RenderCopy(gRenderer, gTexture, NULL, & destRectangle );
+	SDL_Texture * button = loadTexture("Pictures/blue_button.jpg");
+	SDL_Rect buttonRect;
+	buttonRect.h = 200;
+	buttonRect.w = 200;
+	buttonRect.x = SCREEN_WIDTH-2*buttonRect.w;
+	buttonRect.y = (SCREEN_HEIGHT-buttonRect.h)/2;
+
+
+	SDL_RenderCopy(gRenderer, gTexture, NULL, &destRectangle);
+	SDL_RenderCopy(gRenderer, button, NULL, &buttonRect);
+
 	SDL_RenderPresent(gRenderer);
 
 }
