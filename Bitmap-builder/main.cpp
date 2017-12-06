@@ -18,12 +18,18 @@ int main(int argc, char * argv[]) {
 
 	// Testing BMP writing from hardcoded data
 	std::vector<BYTE> pixelData;
-	for (size_t i = 0; i < 432 ; i++)
+	for (size_t i = 0; i < 255 ; i++)
 	{
-		pixelData.push_back(i);
+		for (size_t j = 0; j < 3; j++)
+		{
+			pixelData.push_back(i);
+		}
 	}
 	BMP_Object bmp(12, 12, 24, pixelData);
 	bmp.saveFile("test.bmp");
+
+	BMP_Object fromSDL = display.surfaceToBMP(argv[1]);
+	fromSDL.saveFile("test2.bmp");
 	
 	return 0;
 }

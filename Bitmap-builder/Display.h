@@ -2,6 +2,7 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
+#include "BMP_Object.h"
 
 class Display
 {
@@ -10,6 +11,7 @@ public:
 	~Display();
 
 	void loadPicture( char *);
+	BMP_Object surfaceToBMP( char * );
 
 private:
 

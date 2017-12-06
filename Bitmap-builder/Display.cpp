@@ -110,3 +110,37 @@ void Display::loadPicture(char * filename) {
 	SDL_RenderCopy(gRenderer, gTexture, NULL, NULL);
 	SDL_RenderPresent(gRenderer);
 }
+
+BMP_Object Display::surfaceToBMP(char * filename)
+{
+	BMP_Object processedBitmap;
+	SDL_Surface* loadedSurface = IMG_Load(filename);
+	if (loadedSurface == NULL)
+	{
+		printf("Unable to load image %s! SDL_image Error: %s\n", filename, IMG_GetError());
+	}
+	SDL_LockSurface(loadedSurface);
+	BYTE* ptrPixelData = reinterpret_cast<BYTE*>(loadedSurface->pixels);
+
+
+	long width = loadedSurface->w;
+	processedBitmap.setWidth(width);
+
+	long height = loadedSurface->h;
+	processedBitmap.setHeight(height);
+
+	processedBitmap.setBitsPerPixel(24);
+
+	long pixelBitsLength = loadedSurface->pitch*height;
+	BYTE pixelComponent;
+	std::vector<BYTE> pixelData;
+	for (size_t i = 0; i < pixelBitsLength; i++)
+	{
+		pixelComponent = *(ptrPixelData + i);
+		pixelData.push_back(pixelComponent);
+	}
+	processedBitmap.setPixelData(pixelData);
+
+	SDL_FreeSurface(loadedSurface);
+	return processedBitmap;
+}

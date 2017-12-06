@@ -2,11 +2,35 @@
 
 
 
-BMP_Object::BMP_Object(long width, long height, WORD bitsPerPixel, std::vector<BYTE> pixelData) : width(width), 
+BMP_Object::BMP_Object()
+{
+}
+
+BMP_Object::BMP_Object(long width, long height, WORD bitsPerPixel, std::vector<BYTE> pixelData) : width(width),
 	height(height), bitsPerPixel(bitsPerPixel), pixelData(pixelData) {} 
 
 BMP_Object::~BMP_Object()
 {
+}
+
+void BMP_Object::setWidth(long newWidth)
+{
+	width = newWidth;
+}
+
+void BMP_Object::setHeight(long newHeight)
+{
+	height = newHeight;
+}
+
+void BMP_Object::setPixelData(std::vector<BYTE> newPixelData)
+{
+	pixelData = newPixelData;
+}
+
+void BMP_Object::setBitsPerPixel(WORD newBitsPerPixel)
+{
+	bitsPerPixel = newBitsPerPixel;
 }
 
 void BMP_Object::saveFile(const char * filename)
