@@ -2,21 +2,17 @@
 #include <stdio.h>
 
 
-
-
 Display::Display()
 {	
 	SCREEN_HEIGHT = 700;
 	SCREEN_WIDTH = 1200;
 
-	//Initialize SDL
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
 	}
 	else
 	{
-		//Create window
 		gWindow = SDL_CreateWindow("One and only BMP ", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 		if (gWindow == NULL)
 		{
@@ -75,15 +71,15 @@ SDL_Texture* Display::loadTexture(char* path)
 	}
 	else
 	{
+		printf("Loaded pict(surface) height: %d , width %d", loadedSurface->h, loadedSurface->w);
 		newTexture = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
 		if (newTexture == NULL)
 		{
 			printf("Unable to create texture from %s! SDL Error: %s\n", path, SDL_GetError());
 		}
-
 		SDL_FreeSurface(loadedSurface);
 	}
-
+	
 	return newTexture;
 }
 
@@ -97,16 +93,44 @@ bool Display::loadMedia(char * path)
 		printf("Failed to load texture image!\n");
 		success = false;
 	}
-
+	
 	return success;
+}
+
+SDL_Rect Display::createRectangle() {
+	SDL_Rect rectangle;
+
+	int picWidth, picHeight;
+	SDL_QueryTexture(gTexture, NULL, NULL, &picWidth, &picHeight);
+
+	if (picWidth > 800 || picHeight > 600)
+	{
+		double ratio = picWidth / picHeight;
+		if (ratio > 4 / 3) {
+			picWidth = 800;
+			picHeight = picWidth * ratio;
+		}
+		else {
+			picHeight = 600;
+			picWidth = picHeight * ratio;
+		}
+	}
+
+	rectangle.x = 10;
+	rectangle.y = 10;
+	rectangle.h = picHeight;
+	rectangle.w = picWidth;
+	return rectangle;
 }
 
 void Display::loadPicture(char * filename) {
 
 	SDL_RenderClear(gRenderer);
-	
 	Display::loadMedia(filename);
-		
-	SDL_RenderCopy(gRenderer, gTexture, NULL, NULL);
+	
+	SDL_Rect destRectangle = Display::createRectangle();
+
+	SDL_RenderCopy(gRenderer, gTexture, NULL, & destRectangle );
 	SDL_RenderPresent(gRenderer);
+
 }

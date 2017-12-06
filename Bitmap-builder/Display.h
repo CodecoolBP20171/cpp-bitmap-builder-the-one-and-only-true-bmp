@@ -24,6 +24,7 @@ private:
 
 	bool loadMedia(char*);
 	SDL_Texture* loadTexture(char* );
+	SDL_Rect createRectangle();
 
 };
 
