@@ -10,6 +10,7 @@ public:
 	~Display();
 
 	void loadPicture( char *);
+	bool isSaveClicked(int &, int &);
 
 private:
 
@@ -21,10 +22,12 @@ private:
 	SDL_Surface* gImage = NULL;
 	SDL_Renderer* gRenderer = NULL;
 	SDL_Texture* gTexture = NULL;
+	SDL_Rect buttonRect;
 
 	bool loadMedia(char*);
 	SDL_Texture* loadTexture(char* );
 	SDL_Rect createRectangle();
+	
 
 };
 

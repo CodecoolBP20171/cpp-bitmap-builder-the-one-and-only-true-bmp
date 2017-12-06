@@ -13,7 +13,35 @@ int main(int argc, char * argv[]) {
 	
 	Display display;
 	display.loadPicture(argv[1]);
-	
 
+	//Main loop flag
+	bool quit = false;
+	bool save = false;
+	//Event handler
+	SDL_Event e;
+	//While application is running
+	while (!quit)
+	{
+		//Handle events on queue
+		while (SDL_PollEvent(&e) != 0)
+		{
+			//User requests quit
+			if (e.type == SDL_QUIT)
+			{
+				quit = true;
+			}
+
+			if (e.type == SDL_MOUSEBUTTONUP) {
+				int x, y;
+				SDL_GetMouseState(&x, &y);
+				if (display.isSaveClicked(x, y))
+				{
+					std::cout << "Yay!! Button Clicked!\n";
+					save = true; // This could be omitted, if the save function is run from here
+					quit = true;
+				}
+			}
+		}
+	}
 	return 0;
 }

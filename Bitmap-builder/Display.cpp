@@ -7,6 +7,11 @@ Display::Display()
 	SCREEN_HEIGHT = 700;
 	SCREEN_WIDTH = 1200;
 
+	buttonRect.h = 200;
+	buttonRect.w = 200;
+	buttonRect.x = SCREEN_WIDTH - 2 * buttonRect.w;
+	buttonRect.y = (SCREEN_HEIGHT - buttonRect.h) / 2;
+
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
@@ -129,16 +134,17 @@ void Display::loadPicture(char * filename) {
 	SDL_Rect destRectangle = createRectangle();
 
 	SDL_Texture * button = loadTexture("Pictures/blue_button.jpg");
-	SDL_Rect buttonRect;
-	buttonRect.h = 200;
-	buttonRect.w = 200;
-	buttonRect.x = SCREEN_WIDTH-2*buttonRect.w;
-	buttonRect.y = (SCREEN_HEIGHT-buttonRect.h)/2;
-
 
 	SDL_RenderCopy(gRenderer, gTexture, NULL, &destRectangle);
 	SDL_RenderCopy(gRenderer, button, NULL, &buttonRect);
 
 	SDL_RenderPresent(gRenderer);
 
+}
+
+bool Display::isSaveClicked(int & x, int & y) {
+	if (x > buttonRect.x && x < buttonRect.x + buttonRect.w && y > buttonRect.y && y < buttonRect.y + buttonRect.h) {
+		return true;
+	}
+	return false;
 }
