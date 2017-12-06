@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include "BMP_Object.h"
+#include <deque>
 
 class Display
 {
@@ -14,7 +15,6 @@ public:
 	BMP_Object surfaceToBMP( char * );
 
 private:
-
 	int SCREEN_WIDTH;
 	int SCREEN_HEIGHT;
 
