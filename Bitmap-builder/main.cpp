@@ -29,7 +29,7 @@ int main(int argc, char * argv[]) {
 	bmp.saveFile("test.bmp");
 
 	BMP_Object fromSDL = display.surfaceToBMP(argv[1]);
-	fromSDL.saveFile("test2.bmp");
+	fromSDL.saveFile("test3.bmp");
 	
 	return 0;
 }

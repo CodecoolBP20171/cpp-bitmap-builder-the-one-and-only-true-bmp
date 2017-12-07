@@ -36,8 +36,8 @@ void BMP_Object::setBitsPerPixel(WORD newBitsPerPixel)
 void BMP_Object::saveFile(const char * filename)
 {
 	unsigned long headersSize = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER);
-	unsigned long paddingSize = (4 - ((width * 3) % 4)) % 4;
-	unsigned long pixelDataSize = height * ((width * (bitsPerPixel / 8)) + paddingSize);
+	//unsigned long paddingSize = (4 - ((width * 3) % 4)) % 4;
+	unsigned long pixelDataSize = height * ((width * (bitsPerPixel / 8))); // +paddingSize);
 
 	BITMAPINFOHEADER bmpInfoHeader = { 0 };
 
