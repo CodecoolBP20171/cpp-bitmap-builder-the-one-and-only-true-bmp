@@ -45,6 +45,9 @@ int main(int argc, char * argv[]) {
 			}
 		}
 	}
+	BMP_Object loadedBmp; 
+	loadedBmp.loadFile(argv[1]);
+	loadedBmp.saveFile("test4.bmp");
 	BMP_Object fromSDL = display.surfaceToBMP(argv[1]);
 	fromSDL.saveFile("test3.bmp");
 	return 0;

@@ -155,14 +155,12 @@ BMP_Object Display::surfaceToBMP(char * filename)
 {
 	BMP_Object processedBitmap;
 	SDL_Surface* loadedSurface = IMG_Load(filename);
-	SDL_Surface* convertedSurface;
 	if (loadedSurface == NULL)
 	{
 		printf("Unable to load image %s! SDL_image Error: %s\n", filename, IMG_GetError());
 	}
 	
-	convertedSurface = SDL_ConvertSurfaceFormat(loadedSurface, SDL_PIXELFORMAT_BGR24, 0);
-	loadedSurface = convertedSurface;
+	loadedSurface = SDL_ConvertSurfaceFormat(loadedSurface, SDL_PIXELFORMAT_BGR24, 0);
 
 	SDL_LockSurface(loadedSurface);
 	BYTE* ptrPixelData = reinterpret_cast<BYTE*>(loadedSurface->pixels);
