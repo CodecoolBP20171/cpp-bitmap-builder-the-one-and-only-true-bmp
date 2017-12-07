@@ -7,10 +7,13 @@ Display::Display()
 	SCREEN_HEIGHT = 700;
 	SCREEN_WIDTH = 1200;
 
-	buttonRect.h = 200;
+	centerLeft = { SCREEN_WIDTH / 4, SCREEN_HEIGHT / 2 };
+	centerRight = { 3 * SCREEN_WIDTH / 4, SCREEN_HEIGHT / 2 };
+
+	/*buttonRect.h = 200;
 	buttonRect.w = 200;
 	buttonRect.x = SCREEN_WIDTH - 2 * buttonRect.w;
-	buttonRect.y = (SCREEN_HEIGHT - buttonRect.h) / 2;
+	buttonRect.y = (SCREEN_HEIGHT - buttonRect.h) / 2;*/
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
@@ -66,7 +69,7 @@ Display::~Display()
 }
 
 
-SDL_Texture* Display::loadTexture(char* path)
+SDL_Texture* Display::loadTexture(const char* path)
 {
 	SDL_Texture* newTexture = NULL;
 	SDL_Surface* loadedSurface = IMG_Load(path);
@@ -88,7 +91,7 @@ SDL_Texture* Display::loadTexture(char* path)
 	return newTexture;
 }
 
-bool Display::loadMedia(char * path)
+bool Display::loadMedia(const char * path)
 {
 	bool success = true;
 
@@ -102,47 +105,74 @@ bool Display::loadMedia(char * path)
 	return success;
 }
 
-SDL_Rect Display::createRectangle() {
+SDL_Rect Display::createRectangle(std::string direction) {
 	SDL_Rect rectangle;
+	SDL_Point center;
+	if (direction == "left")
+	{
+		center = centerLeft;
+	}
+	else if (direction == "right")
+	{
+		center = centerRight;
+	}
 
 	int picWidth, picHeight;
 	SDL_QueryTexture(gTexture, NULL, NULL, &picWidth, &picHeight);
 
-	if (picWidth > 800 || picHeight > 600)
+	int maxHeight = SCREEN_HEIGHT;
+	int maxWidth = SCREEN_WIDTH / 2;
+
+	if (picWidth >  maxWidth || picHeight > maxHeight)
 	{
 		double ratio = picWidth / picHeight;
-		if (ratio > 4 / 3) {
-			picWidth = 800;
+		if (ratio > maxWidth / maxHeight) {
+			picWidth = maxWidth;
 			picHeight = picWidth * ratio;
 		}
 		else {
-			picHeight = 600;
+			picHeight = maxHeight;
 			picWidth = picHeight * ratio;
 		}
 	}
 
-	rectangle.x = 10;
-	rectangle.y = 10;
+	rectangle.x = center.x-picWidth/2;
+	rectangle.y = center.y-picHeight/2;
 	rectangle.h = picHeight;
 	rectangle.w = picWidth;
 	return rectangle;
 }
 
-void Display::loadPicture(char * filename) {
+void Display::loadPicture(const char * filename1, const char* filename2) {
 
 	SDL_RenderClear(gRenderer);
 	
-	loadMedia(filename);
-	SDL_Rect destRectangle = createRectangle();
-
-	SDL_Texture * button = loadTexture("Pictures/blue_button.jpg");
-
+	loadMedia(filename1);
+	SDL_Rect destRectangle = createRectangle("left");
 	SDL_RenderCopy(gRenderer, gTexture, NULL, &destRectangle);
-	SDL_RenderCopy(gRenderer, button, NULL, &buttonRect);
+	
+	loadMedia(filename2);
+	destRectangle = createRectangle("right");
+	SDL_RenderCopy(gRenderer, gTexture, NULL, &destRectangle);
 
 	SDL_RenderPresent(gRenderer);
-
 }
+
+void Display::loadPicture(const char * filename) {
+
+	SDL_RenderClear(gRenderer);
+
+	loadMedia("Pictures/blue_button.jpg");
+	buttonRect = createRectangle("right");
+	SDL_RenderCopy(gRenderer, gTexture, NULL, &buttonRect);
+
+	loadMedia(filename);
+	SDL_Rect destRectangle = createRectangle("left");
+	SDL_RenderCopy(gRenderer, gTexture, NULL, &destRectangle);
+
+	SDL_RenderPresent(gRenderer);
+}
+
 
 bool Display::isSaveClicked(int & x, int & y) {
 	if (x > buttonRect.x && x < buttonRect.x + buttonRect.w && y > buttonRect.y && y < buttonRect.y + buttonRect.h) {

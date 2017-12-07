@@ -48,19 +48,32 @@ int main(int argc, char * argv[]) {
 				{
 					BMP_Object fromSDL = display.surfaceToBMP(argv[1]);
 					fromSDL.saveFile(createNewName(argv[1]).c_str());
-					save = true; // This could be omitted, if the save function is run from here
+					save = true;
 					quit = true;
 				}
 			}
 		}
 		if (save) {
-			//loading both pictures
+			
+			display.loadPicture(argv[1], createNewName(argv[1]).c_str());
+		}
+		
+	}
+	quit = false;
+	while (!quit)
+	{
+		while (SDL_PollEvent(&e) != 0)
+		{
+			if (e.type == SDL_QUIT)
+			{
+				quit = true;
+			}
 		}
 	}
-	BMP_Object loadedBmp; 
+	/*BMP_Object loadedBmp; 
 	loadedBmp.loadFile(argv[1]);
-	loadedBmp.saveFile("test4.bmp");
-	BMP_Object fromSDL = display.surfaceToBMP(argv[1]);
-	fromSDL.saveFile("test3.bmp");
+	loadedBmp.saveFile("test4.bmp");*/
+	/*BMP_Object fromSDL = display.surfaceToBMP(argv[1]);
+	fromSDL.saveFile("test3.bmp");*/
 	return 0;
 }

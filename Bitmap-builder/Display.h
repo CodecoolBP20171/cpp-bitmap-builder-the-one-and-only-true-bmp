@@ -11,7 +11,9 @@ public:
 	Display();
 	~Display();
 
-	void loadPicture( char *);
+	void loadPicture( const char *);
+	void loadPicture(const char *, const char *);
+
 	bool isSaveClicked(int &, int &);
 	BMP_Object surfaceToBMP( char * );
 
@@ -24,11 +26,13 @@ private:
 	SDL_Surface* gImage = NULL;
 	SDL_Renderer* gRenderer = NULL;
 	SDL_Texture* gTexture = NULL;
+	SDL_Point centerLeft;
+	SDL_Point centerRight;
 	SDL_Rect buttonRect;
 
-	bool loadMedia(char*);
-	SDL_Texture* loadTexture(char* );
-	SDL_Rect createRectangle();
+	bool loadMedia(const char*);
+	SDL_Texture* loadTexture(const char* );
+	SDL_Rect createRectangle(std::string);
 	
 
 };
