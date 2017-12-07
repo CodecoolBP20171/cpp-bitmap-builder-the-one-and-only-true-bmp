@@ -16,6 +16,10 @@ public:
 	void setBitsPerPixel(WORD newBitsPerPixel);
 	void loadFile(const char* filename);
 	void saveFile(const char* filename);
+	std::vector<BYTE> getPixelData();
+	long getWidth();
+	long getHeight();
+	WORD getBitsPerPixel();
 
 private:
 
