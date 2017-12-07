@@ -5,7 +5,16 @@
 #include <vector>
 #include <Windows.h>
 #include "BMP_Object.h"
+#include <string>
+#include <cstring>
 
+
+std::string createNewName(char* oldName) {
+	std::string newName(oldName);
+	std::cout << newName << "\n";
+	newName.replace(newName.find(".") + 1, 3, "bmp");
+	return newName;
+}
 
 int main(int argc, char * argv[]) {
 
@@ -27,7 +36,6 @@ int main(int argc, char * argv[]) {
 		//Handle events on queue
 		while (SDL_PollEvent(&e) != 0)
 		{
-			//User requests quit
 			if (e.type == SDL_QUIT)
 			{
 				quit = true;
@@ -38,14 +46,17 @@ int main(int argc, char * argv[]) {
 				SDL_GetMouseState(&x, &y);
 				if (display.isSaveClicked(x, y))
 				{
-					std::cout << "Yay!! Button Clicked!\n";
+					BMP_Object fromSDL = display.surfaceToBMP(argv[1]);
+					fromSDL.saveFile(createNewName(argv[1]).c_str());
 					save = true; // This could be omitted, if the save function is run from here
 					quit = true;
 				}
 			}
 		}
+		if (save) {
+			//loading both pictures
+		}
 	}
-	BMP_Object fromSDL = display.surfaceToBMP(argv[1]);
-	fromSDL.saveFile("test3.bmp");
+	
 	return 0;
 }
