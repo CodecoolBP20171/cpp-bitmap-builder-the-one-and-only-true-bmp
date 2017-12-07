@@ -2,6 +2,9 @@
 
 #include <iostream>
 #include "Display.h"
+#include <vector>
+#include <Windows.h>
+#include "BMP_Object.h"
 
 
 int main(int argc, char * argv[]) {
@@ -10,7 +13,6 @@ int main(int argc, char * argv[]) {
 		std::cout << "Not enough arguments." << std::endl;
 		return 0;
 	}
-	
 	Display display;
 	display.loadPicture(argv[1]);
 
@@ -43,5 +45,7 @@ int main(int argc, char * argv[]) {
 			}
 		}
 	}
+	BMP_Object fromSDL = display.surfaceToBMP(argv[1]);
+	fromSDL.saveFile("test3.bmp");
 	return 0;
 }

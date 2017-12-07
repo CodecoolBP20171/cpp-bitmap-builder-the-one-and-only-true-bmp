@@ -3,7 +3,7 @@
 
 
 Display::Display()
-{	
+{
 	SCREEN_HEIGHT = 700;
 	SCREEN_WIDTH = 1200;
 
@@ -22,9 +22,9 @@ Display::Display()
 		if (gWindow == NULL)
 		{
 			printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
-			}
+		}
 		else
-		{	
+		{
 			gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED);
 			if (gRenderer == NULL)
 			{
@@ -46,6 +46,8 @@ Display::Display()
 			}
 		}
 	}
+
+
 }
 
 
@@ -147,4 +149,58 @@ bool Display::isSaveClicked(int & x, int & y) {
 		return true;
 	}
 	return false;
+}
+
+BMP_Object Display::surfaceToBMP(char * filename)
+{
+	BMP_Object processedBitmap;
+	SDL_Surface* loadedSurface = IMG_Load(filename);
+	SDL_Surface* convertedSurface;
+	if (loadedSurface == NULL)
+	{
+		printf("Unable to load image %s! SDL_image Error: %s\n", filename, IMG_GetError());
+	}
+	
+	convertedSurface = SDL_ConvertSurfaceFormat(loadedSurface, SDL_PIXELFORMAT_BGR24, 0);
+	loadedSurface = convertedSurface;
+
+	SDL_LockSurface(loadedSurface);
+	BYTE* ptrPixelData = reinterpret_cast<BYTE*>(loadedSurface->pixels);
+
+	long width = loadedSurface->w;
+	processedBitmap.setWidth(width);
+
+	long height = loadedSurface->h;
+	processedBitmap.setHeight(height);
+
+	processedBitmap.setBitsPerPixel(24);
+
+	long pixelBitsLength = loadedSurface->pitch*height;
+	BYTE pixelComponent;
+	std::deque<std::vector<BYTE>> pixelData;
+	std::vector<BYTE> line;
+	for (size_t k = 0; k < height; k++)
+	{
+		for (size_t j = 0; j < loadedSurface->pitch; j++)
+		{
+			pixelComponent = *(ptrPixelData + k*loadedSurface->pitch + j);
+			line.push_back(pixelComponent);
+		}
+		pixelData.push_front(line);
+		line.clear();
+	}
+	std::vector<BYTE> processedPixelData;
+
+	for (size_t i = 0; i < pixelData.size(); i++)
+	{
+		for (size_t j = 0; j < pixelData[i].size(); j++)
+		{
+			processedPixelData.push_back(pixelData[i][j]);
+		}
+	}
+
+	processedBitmap.setPixelData(processedPixelData);
+
+	SDL_FreeSurface(loadedSurface);
+	return processedBitmap;
 }
